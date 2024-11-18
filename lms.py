@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, jsonify
-import psycopg2
+import psycopg2, os
 import requests
 from datetime import datetime
 
@@ -208,4 +208,5 @@ def get_medicine_details(medicine_id):
         return jsonify({"error": "Internal Server Error"}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
