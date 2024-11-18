@@ -4,13 +4,19 @@ import requests
 from dotenv import load_dotenv
 from datetime import datetime
 
+# Load environment variables from .env file
+load_dotenv()
+
 app = Flask(__name__)
-DB_HOST=os.getenv('DB_HOST'),
-DB_USER=os.getenv('DB_USER'),
-DB_PASSWORD=os.getenv('DB_PASSWORD'),
-DB_NAME=os.getenv('DB_NAME'),
-DB_PORT=os.getenv('DB_PORT', 5432),
-sslmode='require'
+
+# Corrected environment variable assignments
+DB_HOST = os.getenv('DB_HOST')
+DB_USER = os.getenv('DB_USER')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_NAME = os.getenv('DB_NAME')
+DB_PORT = int(os.getenv('DB_PORT', 5432))  # Ensure port is an integer
+sslmode = 'require'
+
 # Database connection
 def lmsdb():
     # Establish a connection to the PostgreSQL database
@@ -22,6 +28,7 @@ def lmsdb():
         port=DB_PORT
     )
     return conn
+
 
 @app.route('/')
 def index():
