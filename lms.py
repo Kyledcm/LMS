@@ -1,19 +1,25 @@
 from flask import Flask, render_template, redirect, url_for, jsonify
 import psycopg2, os
 import requests
+from dotenv import load_dotenv
 from datetime import datetime
 
 app = Flask(__name__)
 
 # Database connection
-def lmsdb():
-    conn = psycopg2.connect(
-        host="localhost",  
-        database="LMS",
-        user="postgres",
-        password="fms-group3"
+try:
+    lmsdb = psycopg2.connect(
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        dbname=os.getenv("DB_NAME"),
+        sslmode='require'
     )
-    return conn
+    conn_cursor = lmsdb.cursor()
+
+except psycopg2.Error as e:
+
+    conn_cursor = None
 
 @app.route('/')
 def index():
