@@ -5,21 +5,23 @@ from dotenv import load_dotenv
 from datetime import datetime
 
 app = Flask(__name__)
-
+DB_HOST=os.getenv("DB_HOST"),
+DB_USER=os.getenv("DB_USER"),
+DB_PASSWORD=os.getenv("DB_PASSWORD"),
+DB_NAME=os.getenv("DB_NAME"),
+DB_PORT=os.getenv("DB_PORT"),
+sslmode='require'
 # Database connection
-try:
-    lmsdb = psycopg2.connect(
-        host=os.getenv("DB_HOST"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        dbname=os.getenv("DB_NAME"),
-        sslmode='require'
+def lmsdb():
+    # Establish a connection to the PostgreSQL database
+    conn = psycopg2.connect(
+        host=DB_HOST,
+        database=DB_NAME,
+        user=DB_USER,
+        password=DB_PASSWORD,
+        port=DB_PORT
     )
-    conn_cursor = lmsdb.cursor()
-
-except psycopg2.Error as e:
-
-    conn_cursor = None
+    return conn
 
 @app.route('/')
 def index():
